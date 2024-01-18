@@ -6,8 +6,13 @@ require("dotenv").config();
 const PORT = process.env.PORT || 5000;
 const path= require('path');
 
+const connectDB= require('./server/database/connection');
+
 // log requests
 app.use(morgan('tiny'));
+
+// MONGODB Connection
+connectDB();
 
 // parse request to body parser
 app.use(bodyParser.urlencoded({encoded: true}));
@@ -21,10 +26,8 @@ app.use('/img', express.static(path.resolve(__dirname, "assets/img")));
 app.use('/js', express.static(path.resolve(__dirname, "assets/js")));
 
 
-// home
-app.get("/", (req, res) => {
-  res.render('index');
-});
+// load router
+app.use('/', require('./server/routes/router'));
 
 app.listen(3000, () => {
   console.log(`Server is running on port ${PORT}`);
