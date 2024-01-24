@@ -12,9 +12,19 @@ export const registerController = async (req, res, next) => {
     if (existingUser) next("Email already registered, please login!");
 
     const user = await userModel.create({ email, name, password });
+
+//Token
+const token= user.createJWT();
+
     res.status(201).send({
       success: true,
       message: "User successfully registered!",
-      user,
+      user:{
+        name:user.name,
+        lastName:user.lastName,
+        email:user.email,
+        location:user.location
+      },
+      token,
     });
 };
