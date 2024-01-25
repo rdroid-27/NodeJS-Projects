@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Password is required!"],
       minlength: [6, "Password length should be grater than 6 characters!"],
-      select: true
+      select: true,
     },
     location: {
       type: String,
@@ -36,6 +36,12 @@ userSchema.pre("save", async function () {
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });
+
+// Compare passwords
+userSchema.methods.comparePasswords = async function (userPassword) {
+  return  await bcrypt.compare(userPassword, this.password);
+  
+};
 
 // JSON WEB TOKEN
 userSchema.methods.createJWT = function () {
