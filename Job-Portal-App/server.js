@@ -11,7 +11,8 @@ import errorMiddleware from "./middlewares/errorMiddleware.js";
 
 // routes imports
 import authRoute from "./routes/authRoute.js";
-
+import userRoute from "./routes/userRoute.js";
+import jobsRoute from './routes/jobsRoute.js';
 // Dotenv config
 dotenv.config();
 
@@ -31,6 +32,8 @@ app.use(morgan("dev"));
 
 // routes
 app.use("/auth", authRoute);
+app.use("/user", userRoute);
+app.use("/job", jobsRoute);
 
 // validation  middleware
 app.use(errorMiddleware);
