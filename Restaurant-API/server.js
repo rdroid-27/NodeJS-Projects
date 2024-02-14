@@ -1,12 +1,12 @@
-const express = require('express');
-const dotenv = require('dotenv').config();
-const PORT=process.env.PORT || 8000;
-const cors = require('cors');
-const morgan = require('morgan');
-const connectDB = require('./config/db');
+const express = require("express");
+const dotenv = require("dotenv").config();
+const PORT = process.env.PORT || 8000;
+const cors = require("cors");
+const morgan = require("morgan");
+const connectDB = require("./config/db");
 
 // rest object
-const app= express();
+const app = express();
 
 // connect Database
 connectDB();
@@ -19,13 +19,15 @@ app.use(express.json()); //parses incoming requests with JSON payloads
 // !ROUTES
 
 // test route
-app.use('/test', require( './routes/testUser'));
+app.use("/test", require("./routes/testUser"));
+//auth routes
+app.use("/auth", require("./routes/auth"));
+app.use("/user", require("./routes/userRoutes"));
 
-
-app.get('/', (req, res) => {
+app.get("/", (req, res) => {
   res.send("Hello from server");
-})
+});
 
-app.listen(PORT, ()=>{
+app.listen(PORT, () => {
   console.log(`APP LISTENING ON PORT ${PORT}`);
-})
+});
