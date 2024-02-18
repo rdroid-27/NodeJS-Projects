@@ -23,6 +23,7 @@ app.use("/test", require("./routes/testUser"));
 //auth routes
 app.use("/auth", require("./routes/auth"));
 app.use("/user", require("./routes/userRoutes"));
+app.use("/restaurant", require("./routes/restaurantRoutes"));
 
 app.get("/", (req, res) => {
   res.send("Hello from server");

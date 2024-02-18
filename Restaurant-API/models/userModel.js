@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       required: [true, "Email is required!"],
-      unique: true
+      unique: true,
     },
     password: {
       type: String,
@@ -32,6 +32,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       default:
         "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn-icons-png.flaticon.com%2F512%2F2919%2F2919906.png&tbnid=-2_PruTRbmu_eM&vet=12ahUKEwjE2LWMh6aEAxXR-DgGHZwEDHAQMygTegUIARCdAQ..i&imgrefurl=https%3A%2F%2Fwww.flaticon.com%2Ffree-icon%2Fprofile_2919906&docid=rAZ70I7-ZVk9cM&w=512&h=512&q=profile&ved=2ahUKEwjE2LWMh6aEAxXR-DgGHZwEDHAQMygTegUIARCdAQ",
+    },
+    answer: {
+      type: String,
+      required: [true, "Answer field cannot be empty!"],
     },
   },
   { timestamps: true }

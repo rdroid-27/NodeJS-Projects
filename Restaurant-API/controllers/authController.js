@@ -4,10 +4,11 @@ const JWT = require("jsonwebtoken");
 
 const registerUserController = async (req, res) => {
   try {
-    const { userName, email, password, phone, address, userType } = req.body;
+    const { userName, email, password, phone, address, userType, answer } =
+      req.body;
 
     //validate all fields
-    if (!userName || !email || !password || !phone || !userType) {
+    if (!userName || !email || !password || !phone || !userType || !answer) {
       return res.status(500).send({
         success: false,
         message: "All fields are mandatory!",
@@ -26,10 +27,11 @@ const registerUserController = async (req, res) => {
     const user = await userModel.create({
       userName,
       email,
-      password:hashPass,
+      password: hashPass,
       phone,
       address,
       userType,
+      answer,
     });
 
     if (user) {
@@ -60,8 +62,8 @@ const loginUserController = async (req, res) => {
     }
 
     // find user
-    const user = await userModel.findOne({email});
-    const isMatch= await bcrypt.compare(password, user.password);
+    const user = await userModel.findOne({ email });
+    const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch || !user) {
       res.status(404).send({
@@ -69,10 +71,12 @@ const loginUserController = async (req, res) => {
         message: "Invalid Credentials!",
       });
     }
-    user.password= undefined;
-    
+    user.password = undefined;
+
     // create token
-    let token = JWT.sign({ _id : user._id }, process.env.JWT_SECRET ,{ expiresIn: '10d'});
+    let token = JWT.sign({ _id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "10d",
+    });
     res.status(200).send({
       success: true,
       message: "User Login Successful!",
