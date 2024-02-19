@@ -3,6 +3,7 @@ const {
   createRestaurantController,
   getAllRestaurantController,
   getRestaurantIdController,
+  deleteRestaurantController
 } = require("../controllers/restaurantController");
 const authMiddleware = require("../middlewares/authMiddleware");
 const router = express.Router();
@@ -18,13 +19,7 @@ router.get("/getAll", authMiddleware, getAllRestaurantController);
 // GET RESTAURANT ID || GET
 router.get("/get/:id", authMiddleware, getRestaurantIdController);
 
-// // UPDATE PASSWORD|| POST
-// router.post("/updatePassword", authMiddleware, updatePasswordController);
-
-// // RESET PASSWORD|| POST
-// router.post("/resetPassword", authMiddleware, resetPasswordController);
-
-// // RESET PASSWORD|| POST
-// router.delete("/deleteUser", authMiddleware, deleteUserController);
+// DELETE RESTAURANT ID || GET
+router.delete("/delete/:id", authMiddleware, deleteRestaurantController);
 
 module.exports = router;

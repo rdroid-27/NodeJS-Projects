@@ -18,16 +18,16 @@ app.use(express.json()); //parses incoming requests with JSON payloads
 
 // !ROUTES
 
-// test route
-app.use("/test", require("./routes/testUser"));
 //auth routes
 app.use("/auth", require("./routes/auth"));
+// user routes
 app.use("/user", require("./routes/userRoutes"));
+// restaurant routes
 app.use("/restaurant", require("./routes/restaurantRoutes"));
-
-app.get("/", (req, res) => {
-  res.send("Hello from server");
-});
+// category routes
+app.use("/category", require("./routes/categoryRoutes"));
+// foods routes
+app.use("/foods", require("./routes/foodRoutes"));
 
 app.listen(PORT, () => {
   console.log(`APP LISTENING ON PORT ${PORT}`);

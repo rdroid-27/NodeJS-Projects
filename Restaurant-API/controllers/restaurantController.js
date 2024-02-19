@@ -51,17 +51,17 @@ const createRestaurantController = async (req, res) => {
 const getAllRestaurantController = async (req, res) => {
   try {
     const rests = await restaurantModel.find();
-    if(!rests){
+    if (!rests) {
       return res.status(500).send({
-        success:false,
-        message:"No restaurants found!"
+        success: false,
+        message: "No restaurants found!",
       });
     }
     res.status(200).send({
       success: true,
       message: "Here are all of your Restaurants!",
-      totalCount:rests.length,
-      restaurants:rests,
+      totalCount: rests.length,
+      restaurants: rests,
     });
   } catch (error) {
     res.status(500).send({
@@ -74,19 +74,59 @@ const getAllRestaurantController = async (req, res) => {
 
 const getRestaurantIdController = async (req, res) => {
   try {
-    console.log(req.params.id);
-    const rest = await restaurantModel.findById(req.params.id);
-    if(!rest){
+    const restId = req.params.id;
+    if (!restId) {
       return res.status(500).send({
-        success:false,
-        message:`No restaurant found with id: ${req.params.id}`
+        success: false,
+        message: "Provide Restaurant Id!",
+      });
+    }
+    const rest = await restaurantModel.findById({ _id: req.params.id });
+    console.log(rest);
+    if (!rest) {
+      return res.status(500).send({
+        success: false,
+        message: `No restaurant found with id: ${req.params.id}`,
       });
     }
     res.status(200).send({
       success: true,
       message: "Here is your Restaurant!",
-      rest
+      rest,
     });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Error Getting Restaurant!",
+      error,
+    });
+  }
+};
+
+const deleteRestaurantController = async (req, res) => {
+  try {
+    const restId = req.params.id;
+    if (!restId) {
+      return res.status(500).send({
+        success: false,
+        message: "Provide Restaurant Id!",
+      });
+    }
+    const deletedRest = await restaurantModel.findByIdAndDelete({
+      _id: req.params.id,
+    });
+    
+    if (deletedRest!=null) {
+      res.status(200).send({
+        success: true,
+        message: "Restaurant Deleted!",
+      });
+    } else {
+      return res.status(500).send({
+        success: false,
+        message: "No Restaurant with given ID Found!",
+      });
+    }
   } catch (error) {
     res.status(500).send({
       success: false,
@@ -99,5 +139,6 @@ const getRestaurantIdController = async (req, res) => {
 module.exports = {
   createRestaurantController,
   getAllRestaurantController,
-  getRestaurantIdController
+  getRestaurantIdController,
+  deleteRestaurantController,
 };
