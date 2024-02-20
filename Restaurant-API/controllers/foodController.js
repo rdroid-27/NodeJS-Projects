@@ -1,4 +1,5 @@
 const foodModel = require("../models/foodModel");
+const orderModel = require("../models/orderModel");
 
 const createFoodController = async (req, res) => {
   try {
@@ -216,6 +217,68 @@ const deleteFoodController = async (req, res) => {
   }
 };
 
+const placeOrderController = async (req, res) => {
+  try {
+    const { cart } = req.body;
+    if (!cart) {
+      res.status(500).send({
+        success: false,
+        message: "Please add cart!",
+      });
+    }
+    let total = 0;
+    cart.map((i) => {
+      total += i.price;
+    });
+
+    const newOrder = new orderModel({
+      foods: cart,
+      payment: total,
+      buyer: req.body.id,
+    });
+    await newOrder.save();
+    res.status(200).send({
+      success: true,
+      message: "Order placed successfully",
+      newOrder,
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Error In Ordering Food!",
+    });
+  }
+};
+
+const orderStatusController = async (req, res) => {
+  try {
+    const { status } = req.body;
+    const orderId = req.params.id;
+    if (!orderId) {
+      res.status(404).send({
+        success: false,
+        message: "Please enter Order Id!",
+      });
+    }
+    const updatedOrder = await orderModel.findByIdAndUpdate(
+      orderId,
+      { status },
+      { new: true }
+    );
+
+    res.status(200).send({
+      success: true,
+      message: "Order Status updated",
+      updatedOrder
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Error In Getting Order Status!",
+    });
+  }
+};
+
 module.exports = {
   createFoodController,
   getAllFoodController,
@@ -223,4 +286,6 @@ module.exports = {
   getFoodByRestaurantIdController,
   updateFoodController,
   deleteFoodController,
+  placeOrderController,
+  orderStatusController,
 };
